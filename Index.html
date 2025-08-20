@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produkttests & Empfehlungen – Amazon Affiliate</title>
+  <meta name="description" content="Bewertungen und Produkttests mit Affiliate-Links zu Amazon. Als Amazon-Partner verdiene ich an qualifizierten Verkäufen." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- Hinweis-Banner -->
+  <div class="bg-yellow-50 border-b border-yellow-200 text-yellow-900 text-center py-2 text-sm">
+    Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 bg-white shadow z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold">Mein Produkttest-Portal</h1>
+    </div>
+  </header>
+
+  <!-- Produktübersicht -->
+  <main class="max-w-6xl mx-auto px-4 py-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="grid"></main>
+
+  <!-- Vorlage für Produktkarte -->
+  <template id="cardTpl">
+    <article class="bg-white rounded-xl shadow hover:shadow-lg p-4 flex flex-col">
+      <img class="w-full h-44 object-cover rounded-lg bg-gray-100" />
+      <h3 class="mt-3 text-lg font-semibold line-clamp-2"></h3>
+      <div class="mt-1 flex items-center gap-1 rating text-yellow-500"></div>
+      <p class="mt-2 text-sm text-gray-700 line-clamp-3"></p>
+      <span class="mt-2 text-sm font-semibold text-gray-900 price"></span>
+      <a target="_blank" rel="nofollow noopener sponsored" class="mt-4 inline-flex items-center justify-center rounded-lg bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700">Jetzt bei Amazon ansehen</a>
+    </article>
+  </template>
+
+  <script>
+    // Demo-Daten (eigene Produkte eintragen!)
+    const PRODUCTS = [
+      {
+        title: "Kabellose Kopfhörer X100",
+        image: "https://images.unsplash.com/photo-1518444432469-9b39ba1bc5b4?w=800",
+        price: 89.99,
+        score: 4.6,
+        review: "Satter Klang, starke Akkulaufzeit. Bedienung etwas fummelig.",
+        asin: "B00EXAMPLE1",
+        tag: "dein-tag-21"
+      },
+      {
+        title: "Standmixer UltraBlend 9000",
+        image: "https://images.unsplash.com/photo-1586201375761-83865001e31b?w=800",
+        price: 59.95,
+        score: 4.3,
+        review: "Leise, leicht zu reinigen. Eis-Crush okay, Metallgehäuse wertig.",
+        asin: "B00EXAMPLE2",
+        tag: "dein-tag-21"
+      },
+      {
+        title: "LED-Campinglampe Pro",
+        image: "https://images.unsplash.com/photo-1508780709619-79562169bc64?w=800",
+        price: 24.49,
+        score: 4.8,
+        review: "Sehr hell, IP-Schutz, hält das ganze Wochenende.",
+        asin: "B00EXAMPLE3",
+        tag: "dein-tag-21"
+      }
+    ];
+
+    // Sterne rendern
+    function renderStars(score) {
+      const full = Math.floor(score);
+      const half = score % 1 >= 0.5;
+      let stars = "";
+      for (let i = 0; i < 5; i++) {
+        if (i < full) stars += "★";
+        else if (i === full && half) stars += "☆";
+        else stars += "✩";
+      }
+      return stars;
+    }
+
+    // Produkte ins Grid rendern
+    const grid = document.getElementById("grid");
+    const tpl = document.getElementById("cardTpl");
+    PRODUCTS.forEach(p => {
+      const card = tpl.content.cloneNode(true);
+      card.querySelector("img").src = p.image;
+      card.querySelector("h3").textContent = p.title;
+      card.querySelector(".rating").textContent = renderStars(p.score);
+      card.querySelector("p").textContent = p.review;
+      card.querySelector(".price").textContent = p.price ? p.price.toFixed(2) + " €" : "";
+      card.querySelector("a").href = `https://www.amazon.de/dp/${p.asin}?tag=${p.tag}`;
+      grid.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>
